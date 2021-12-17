@@ -1,0 +1,39 @@
+version: "3.8"
+#
+volumes:
+  vol-emqx-data:
+    name: foo-emqx-data
+#  vol-emqx-etc:
+#    name: foo-emqx-etc
+  vol-emqx-log:
+    name: foo-emqx-log
+#
+
+services:
+
+  strapi:
+    image: strapi/strapi
+    environment:
+      DATABASE_CLIENT: mysql
+      DATABASE_HOST: mariadb
+      DATABASE_PORT: "${DATABASE_PORT}"
+      DATABASE_NAME: "${DATABASE_NAME}"
+      DATABASE_USERNAME: "${DATABASE_USERNAME}"
+      DATABASE_PASSWORD: "${DATABASE_PASSWORD}"
+      DATABASE_SSL: 'false'
+    volumes:
+      - ./appstrapi:/srv/app
+    ports:
+      - '1337:1337'
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb
+    volumes:
+      - ./data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DATABASE_NAME}"
+      MYSQL_USER: "${DATABASE_USERNAME}"
+      MYSQL_PASSWORD: "${DATABASE_PASSWORD}"

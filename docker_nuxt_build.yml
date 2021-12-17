@@ -1,0 +1,20 @@
+version: "3.8"
+
+
+services:
+
+  node_build:
+    container_name: node_build_page
+    image: "node:14"
+    working_dir: /home/node/app
+    volumes:
+      - ./app/:/home/node/app
+    environment:
+       TZ: "${TZ}"
+
+    command: sh -c "npm run build"
+
+
+
+
+
